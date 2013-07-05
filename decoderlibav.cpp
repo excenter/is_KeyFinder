@@ -51,7 +51,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
   }
 
   if(avformat_find_stream_info(fCtx, NULL) < 0){
-    av_close_input_file(fCtx);
+    avformat_close_input(&fCtx);
     qWarning("Could not find stream information for file %s", filePathCh);
     throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotFindStreamInformation().toLocal8Bit().constData());
   }
@@ -64,7 +64,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
   }
 
   if(audioStream == -1){
-    av_close_input_file(fCtx);
+    avformat_close_input(&fCtx);
     qWarning("Could not find an audio stream for file %s", filePathCh);
     throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotFindAudioStream().toLocal8Bit().constData());
   }
@@ -74,7 +74,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
   int durationMinutes = durationSeconds / 60;
   // First condition is a hack for bizarre overestimation of some MP3s
   if(durationMinutes < 720 && durationSeconds > maxDuration * 60){
-    av_close_input_file(fCtx);
+    avformat_close_input(&fCtx);
     qWarning("Duration of file %s (%d:%d) exceeds specified maximum (%d:00)", filePathCh, durationMinutes, durationSeconds % 60, maxDuration);
     throw KeyFinder::Exception(GuiStrings::getInstance()->durationExceedsPreference(durationMinutes, durationSeconds % 60, maxDuration).toLocal8Bit().constData());
   }
@@ -83,7 +83,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
   cCtx = fCtx->streams[audioStream]->codec;
   codec = avcodec_find_decoder(cCtx->codec_id);
   if(codec == NULL){
-    av_close_input_file(fCtx);
+    avformat_close_input(&fCtx);
     qWarning("Audio stream has unsupported codec in file %s", filePathCh);
     throw KeyFinder::Exception(GuiStrings::getInstance()->libavUnsupportedCodec().toLocal8Bit().constData());
   }
@@ -91,7 +91,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
   // Open codec
   int codecOpenResult = avcodec_open2(cCtx, codec, &dict);
   if(codecOpenResult < 0){
-    av_close_input_file(fCtx);
+    avformat_close_input(&fCtx);
     qWarning("Could not open audio codec %s (%d) for file %s", codec->long_name, codecOpenResult, filePathCh);
     throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotOpenCodec(codec->long_name, codecOpenResult).toLocal8Bit().constData());
   }
@@ -102,7 +102,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
   );
   if(rsCtx == NULL){
     avcodec_close(cCtx);
-    av_close_input_file(fCtx);
+    avformat_close_input(&fCtx);
     qWarning("Could not create ReSampleContext for file %s", filePathCh);
     throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotCreateResampleContext().toLocal8Bit().constData());
   }
@@ -122,7 +122,7 @@ AudioFileDecoder::~AudioFileDecoder(){
   }
   codecMutexLocker.unlock();
 
-  av_close_input_file(fCtx);
+  avformat_close_input(&fCtx);
   delete[] filePathCh;
 }
 
