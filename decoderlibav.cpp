@@ -110,7 +110,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
     avcodec_close(cCtx);
     avformat_close_input(&fCtx);
     qWarning("Could not create resample context for file %s", filePathCh);
-    throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotCreateResampleContext().toLocal8Bit().constData());
+    throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotCreateResampleContext(rsCtxOpenResult).toLocal8Bit().constData());
   }
 
   qDebug("Decoder prepared for %s (%s, %d)", filePathCh, av_get_sample_fmt_name(cCtx->sample_fmt), cCtx->sample_rate);

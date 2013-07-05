@@ -53,7 +53,7 @@ public:
   QString libavCouldNotFindAudioStream() const;
   QString libavUnsupportedCodec() const;
   QString libavCouldNotOpenCodec(const char*, int) const;
-  QString libavCouldNotCreateResampleContext() const;
+  QString libavCouldNotCreateResampleContext(int) const;
   QString libavCouldNotResample() const;
   QString libavTooManyBadPackets(int) const;
   QString durationExceedsPreference(int, int, int) const;

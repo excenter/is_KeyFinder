@@ -125,9 +125,9 @@ QString GuiStrings::libavCouldNotOpenCodec(const char* name, int result) const{
   return tr("Could not open audio codec %1 (%2)").arg(name).arg(QString::number(result));
 }
 
-QString GuiStrings::libavCouldNotCreateResampleContext() const{
+QString GuiStrings::libavCouldNotCreateResampleContext(int result) const{
   //: Status of an individual file in the Batch window
-  return tr("Could not create ReSampleContext");
+  return tr("Could not create resampling context (%1)").arg(QString::number(result));
 }
 
 QString GuiStrings::libavCouldNotResample() const{
