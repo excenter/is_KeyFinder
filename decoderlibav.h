@@ -41,8 +41,11 @@
 #define AUDIO_REFILL_THRESH 4096
 extern "C"{
 #include <libavutil/avutil.h>
+#include <libavutil/opt.h>
+#include <libavutil/mathematics.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavresample/avresample.h>
 }
 
 #ifdef Q_OS_WIN
@@ -66,7 +69,7 @@ private:
   AVFormatContext* fCtx;
   AVCodecContext* cCtx;
   AVDictionary* dict;
-  ReSampleContext* rsCtx;
+  AVAudioResampleContext* rsCtx;
   bool decodePacket(AVPacket*, KeyFinder::AudioData*);
 };
 
