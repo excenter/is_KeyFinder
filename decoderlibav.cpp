@@ -98,7 +98,7 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
 
   rsCtx = avresample_alloc_context();
   av_opt_set_int(rsCtx, "in_channel_layout",  cCtx->channel_layout, 0);
-  av_opt_set_int(rsCtx, "out_channel_layout", AV_CH_LAYOUT_MONO,    0);
+  av_opt_set_int(rsCtx, "out_channel_layout", cCtx->channel_layout, 0);
   av_opt_set_int(rsCtx, "in_sample_rate",     cCtx->sample_rate,    0);
   av_opt_set_int(rsCtx, "out_sample_rate",    cCtx->sample_rate,    0);
   av_opt_set_int(rsCtx, "in_sample_fmt",      cCtx->sample_fmt,     0);
@@ -181,7 +181,6 @@ bool AudioFileDecoder::decodePacket(AVPacket* originalPacket, KeyFinder::AudioDa
       continue; // nothing decoded
     int newSamplesDecoded = dataSize / av_get_bytes_per_sample(cCtx->sample_fmt);
 
-
     // Resample if necessary
     if(cCtx->sample_fmt != AV_SAMPLE_FMT_S16){
       int in_linesize, in_samples;
@@ -198,7 +197,6 @@ bool AudioFileDecoder::decodePacket(AVPacket* originalPacket, KeyFinder::AudioDa
       );
       dataBuffer = (int16_t*)frameBufferConverted;
     }
-
 
     int oldSampleCount = audio->getSampleCount();
     audio->addToSampleCount(newSamplesDecoded);

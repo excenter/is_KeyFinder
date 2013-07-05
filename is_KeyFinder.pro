@@ -101,6 +101,7 @@ unix|macx{
   LIBS += -lavcodec
   LIBS += -lavformat
   LIBS += -lavutil
+  LIBS += -lavresample
   LIBS += -ltag
   LIBS += -lboost_system
   LIBS += -lboost_thread
@@ -127,6 +128,7 @@ win32{
   LIBS += -lavcodec
   LIBS += -lavformat
   LIBS += -lavutil
+  LIBS += -lavresample
   LIBS += -llibtag
   LIBS += -LC:/mingw/local/lib
   LIBS += -lboost_system-47-mt-1_52
