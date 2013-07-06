@@ -41,7 +41,9 @@
 #define AUDIO_REFILL_THRESH 4096
 extern "C"{
 #include <libavutil/avutil.h>
+#include <libavutil/audioconvert.h>
 #include <libavutil/opt.h>
+#include <libavutil/samplefmt.h>
 #include <libavutil/mathematics.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>

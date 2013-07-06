@@ -49,7 +49,7 @@ public:
   QString seratoSubcratesDirName() const;
   QString libsrcError() const;
   QString libavCouldNotOpenFile(int) const;
-  QString libavCouldNotFindStreamInformation() const;
+  QString libavCouldNotFindStreamInformation(int) const;
   QString libavCouldNotFindAudioStream() const;
   QString libavUnsupportedCodec() const;
   QString libavCouldNotOpenCodec(const char*, int) const;

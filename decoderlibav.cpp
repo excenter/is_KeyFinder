@@ -50,10 +50,11 @@ AudioFileDecoder::AudioFileDecoder(const QString& filePath, const int maxDuratio
     throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotOpenFile(openInputResult).toLocal8Bit().constData());
   }
 
-  if(avformat_find_stream_info(fCtx, NULL) < 0){
+  int findStreamResult = avformat_find_stream_info(fCtx, NULL);
+  if(findStreamResult < 0){
     avformat_close_input(&fCtx);
-    qWarning("Could not find stream information for file %s", filePathCh);
-    throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotFindStreamInformation().toLocal8Bit().constData());
+    qWarning("Could not find stream information for file %s (%d)", filePathCh, findStreamResult);
+    throw KeyFinder::Exception(GuiStrings::getInstance()->libavCouldNotFindStreamInformation(findStreamResult).toLocal8Bit().constData());
   }
 
   for(int i=0; i<(signed)fCtx->nb_streams; i++){

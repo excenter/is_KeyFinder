@@ -105,9 +105,9 @@ QString GuiStrings::libavCouldNotOpenFile(int n) const{
   return tr("Could not open audio file (%1)").arg(QString::number(n));
 }
 
-QString GuiStrings::libavCouldNotFindStreamInformation() const{
+QString GuiStrings::libavCouldNotFindStreamInformation(int n) const{
   //: Status of an individual file in the Batch window
-  return tr("Could not find stream information");
+  return tr("Could not find stream information (%1)").arg(QString::number(n));
 }
 
 QString GuiStrings::libavCouldNotFindAudioStream() const{
